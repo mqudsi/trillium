@@ -1,0 +1,1 @@
+initSidebarItems({"enum":[["CompressionAlgorithm","Algorithms supported by this crate"]],"fn":[["compression","Alias for `Compression::new`"]],"struct":[["Compression","Trillium handler for compression"]]});

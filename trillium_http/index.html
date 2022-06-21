@@ -1,0 +1,106 @@
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="This crate provides the http 1.x implementation for Trillium."><meta name="keywords" content="rust, rustlang, rust-lang, trillium_http"><title>trillium_http - Rust</title><link rel="preload" as="font" type="font/woff2" crossorigin href="../SourceSerif4-Regular.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../FiraSans-Regular.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../FiraSans-Medium.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../SourceCodePro-Regular.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../SourceSerif4-Bold.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../SourceCodePro-Semibold.ttf.woff2"><link rel="stylesheet" type="text/css" href="../normalize.css"><link rel="stylesheet" type="text/css" href="../rustdoc.css" id="mainThemeStyle"><link rel="stylesheet" type="text/css" href="../ayu.css" disabled><link rel="stylesheet" type="text/css" href="../dark.css" disabled><link rel="stylesheet" type="text/css" href="../light.css" id="themeStyle"><script id="default-settings" ></script><script src="../storage.js"></script><script src="../crates.js"></script><script defer src="../main.js"></script>
+    <noscript><link rel="stylesheet" href="../noscript.css"></noscript><link rel="alternate icon" type="image/png" href="../favicon-16x16.png"><link rel="alternate icon" type="image/png" href="../favicon-32x32.png"><link rel="icon" type="image/svg+xml" href="../favicon.svg"></head><body class="rustdoc mod crate"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="mobile-topbar"><button class="sidebar-menu-toggle">&#9776;</button><a class="sidebar-logo" href="../trillium_http/index.html"><div class="logo-container"><img class="rust-logo" src="../rust-logo.svg" alt="logo"></div>
+        </a><h2 class="location"></h2>
+    </nav>
+    <nav class="sidebar"><a class="sidebar-logo" href="../trillium_http/index.html"><div class="logo-container"><img class="rust-logo" src="../rust-logo.svg" alt="logo"></div>
+        </a><h2 class="location"><a href="#">Crate trillium_http</a></h2><div class="sidebar-elems"><div class="block"><ul><li class="version">Version 0.2.7</li><li><a id="all-types" href="all.html">All Items</a></li></ul></div><section><div class="block"><ul><li><a href="#modules">Modules</a></li><li><a href="#structs">Structs</a></li><li><a href="#enums">Enums</a></li><li><a href="#constants">Constants</a></li><li><a href="#types">Type Definitions</a></li></ul></div></section><div id="sidebar-vars" data-name="trillium_http" data-ty="mod" data-relpath=""></div><script defer src="sidebar-items.js"></script></div></nav><main><div class="width-limiter"><div class="sub-container"><a class="sub-logo-container" href="../trillium_http/index.html"><img class="rust-logo" src="../rust-logo.svg" alt="logo"></a><nav class="sub"><form class="search-form"><div class="search-container"><span></span><input class="search-input" name="search" autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"><button type="button" id="help-button" title="help">?</button><div id="settings-menu" tabindex="-1">
+                                <a href="../settings.html" title="settings"><img width="22" height="22" alt="Change settings" src="../wheel.svg"></a></div>
+                        </div></form></nav></div><section id="main-content" class="content"><div class="main-heading">
+    <h1 class="fqn"><span class="in-band">Crate <a class="mod" href="#">trillium_http</a><button id="copy-path" onclick="copy_path(this)" title="Copy item path to clipboard"><img src="../clipboard.svg" width="19" height="18" alt="Copy item path"></button></span></h1><span class="out-of-band"><a class="srclink" href="../src/trillium_http/lib.rs.html#1-138">source</a> · <a id="toggle-all-docs" href="javascript:void(0)" title="collapse all docs">[<span class="inner">&#x2212;</span>]</a></span></div><details class="rustdoc-toggle top-doc" open><summary class="hideme"><span>Expand description</span></summary><div class="docblock"><p>This crate provides the http 1.x implementation for Trillium.</p>
+<h3 id="stability"><a href="#stability">Stability</a></h3>
+<p>As this is primarily intended for internal use by the <a href="https://docs.trillium.rs/trillium">Trillium
+crate</a>, the api is likely to be
+less stable than that of the higher level abstractions in Trillium.</p>
+<h3 id="example"><a href="#example">Example</a></h3>
+<p>This is an elaborate example that demonstrates some of <code>trillium_http</code>’s
+capabilities.  Please note that trillium itself provides a much more
+usable interface on top of <code>trillium_http</code>, at very little cost.</p>
+
+<div class="example-wrap"><pre class="rust rust-example-rendered"><code><span class="kw">use</span> <span class="ident">async_net</span>::{<span class="ident">TcpListener</span>, <span class="ident">TcpStream</span>};
+<span class="kw">use</span> <span class="ident">futures_lite::StreamExt</span>;
+<span class="kw">use</span> <span class="ident">stopper::Stopper</span>;
+<span class="kw">use</span> <span class="ident">trillium_http</span>::{<span class="ident">Conn</span>, <span class="prelude-ty">Result</span>};
+
+<span class="kw">let</span> <span class="ident">stopper</span> <span class="op">=</span> <span class="ident">Stopper::new</span>();
+<span class="kw">let</span> <span class="ident">listener</span> <span class="op">=</span> <span class="ident">TcpListener::bind</span>((<span class="string">&quot;localhost&quot;</span>, <span class="number">0</span>)).<span class="kw">await</span><span class="question-mark">?</span>;
+<span class="kw">let</span> <span class="ident">port</span> <span class="op">=</span> <span class="ident">listener</span>.<span class="ident">local_addr</span>()<span class="question-mark">?</span>.<span class="ident">port</span>();
+
+<span class="kw">let</span> <span class="ident">server_stopper</span> <span class="op">=</span> <span class="ident">stopper</span>.<span class="ident">clone</span>();
+<span class="kw">let</span> <span class="ident">server_handle</span> <span class="op">=</span> <span class="ident">smol::spawn</span>(<span class="kw">async</span> <span class="kw">move</span> {
+    <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">incoming</span> <span class="op">=</span> <span class="ident">server_stopper</span>.<span class="ident">stop_stream</span>(<span class="ident">listener</span>.<span class="ident">incoming</span>());
+
+    <span class="kw">while</span> <span class="kw">let</span> <span class="prelude-val">Some</span>(<span class="prelude-val">Ok</span>(<span class="ident">stream</span>)) <span class="op">=</span> <span class="ident">incoming</span>.<span class="ident">next</span>().<span class="kw">await</span> {
+        <span class="kw">let</span> <span class="ident">stopper</span> <span class="op">=</span> <span class="ident">server_stopper</span>.<span class="ident">clone</span>();
+        <span class="ident">smol::spawn</span>(<span class="ident">Conn::map</span>(<span class="ident">stream</span>, <span class="ident">stopper</span>, <span class="op">|</span><span class="kw-2">mut</span> <span class="ident">conn</span>: <span class="ident">Conn</span><span class="op">&lt;</span><span class="ident">TcpStream</span><span class="op">&gt;</span><span class="op">|</span> <span class="kw">async</span> <span class="kw">move</span> {
+            <span class="ident">conn</span>.<span class="ident">set_response_body</span>(<span class="string">&quot;hello world&quot;</span>);
+            <span class="ident">conn</span>.<span class="ident">set_status</span>(<span class="number">200</span>);
+            <span class="ident">conn</span>
+         })).<span class="ident">detach</span>()
+    }
+
+    <span class="ident">Result::Ok</span>(())
+});
+
+<span class="comment">// this example uses the trillium client</span>
+<span class="comment">// please note that this api is still especially unstable.</span>
+<span class="comment">// any other http client would work here too</span>
+<span class="kw">let</span> <span class="ident">url</span> <span class="op">=</span> <span class="macro">format!</span>(<span class="string">&quot;http://localhost:{}/&quot;</span>, <span class="ident">port</span>);
+<span class="kw">type</span> <span class="ident">ClientConn</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span><span class="op">&gt;</span> <span class="op">=</span> <span class="ident">trillium_client::Conn</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span>, <span class="ident">trillium_smol::TcpConnector</span><span class="op">&gt;</span>;
+<span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">client_conn</span> <span class="op">=</span> <span class="ident">ClientConn::get</span>(<span class="kw-2">&amp;</span><span class="kw-2">*</span><span class="ident">url</span>).<span class="ident">execute</span>().<span class="kw">await</span><span class="question-mark">?</span>;
+
+<span class="macro">assert_eq!</span>(<span class="ident">client_conn</span>.<span class="ident">status</span>().<span class="ident">unwrap</span>(), <span class="number">200</span>);
+<span class="macro">assert_eq!</span>(<span class="ident">client_conn</span>.<span class="ident">response_headers</span>().<span class="ident">get_str</span>(<span class="string">&quot;content-length&quot;</span>), <span class="prelude-val">Some</span>(<span class="string">&quot;11&quot;</span>));
+<span class="macro">assert_eq!</span>(
+    <span class="ident">client_conn</span>.<span class="ident">response_body</span>().<span class="ident">read_string</span>().<span class="kw">await</span><span class="question-mark">?</span>,
+    <span class="string">&quot;hello world&quot;</span>
+);
+
+<span class="ident">stopper</span>.<span class="ident">stop</span>(); <span class="comment">// stop the server after one request</span>
+<span class="ident">server_handle</span>.<span class="kw">await</span><span class="question-mark">?</span>; <span class="comment">// wait for the server to shut down</span></code></pre></div>
+</div></details><h2 id="modules" class="small-section-header"><a href="#modules">Modules</a></h2>
+<div class="item-table"><div class="item-row"><div class="item-left module-item"><a class="mod" href="transport/index.html" title="trillium_http::transport mod">transport</a></div><div class="item-right docblock-short"><p>Types to represent the bidirectional data stream over which the
+HTTP protocol is communicated</p>
+</div></div></div><h2 id="structs" class="small-section-header"><a href="#structs">Structs</a></h2>
+<div class="item-table"><div class="item-row"><div class="item-left module-item"><a class="struct" href="struct.Body.html" title="trillium_http::Body struct">Body</a></div><div class="item-right docblock-short"><p>The trillium representation of a http body. This can contain
+either <code>&amp;'static [u8]</code> content, <code>Vec&lt;u8&gt;</code> content, or a boxed
+<code>AsyncRead</code> type.</p>
+</div></div><div class="item-row"><div class="item-left module-item"><a class="struct" href="struct.Conn.html" title="trillium_http::Conn struct">Conn</a></div><div class="item-right docblock-short"><p>A http connection</p>
+</div></div><div class="item-row"><div class="item-left module-item"><a class="struct" href="struct.HeaderName.html" title="trillium_http::HeaderName struct">HeaderName</a></div><div class="item-right docblock-short"><p>The name of a http header. This can be either a
+<a href="enum.KnownHeaderName.html" title="KnownHeaderName"><code>KnownHeaderName</code></a> or a string representation of an unknown
+header.</p>
+</div></div><div class="item-row"><div class="item-left module-item"><a class="struct" href="struct.HeaderValue.html" title="trillium_http::HeaderValue struct">HeaderValue</a></div><div class="item-right docblock-short"><p>A <code>HeaderValue</code> represents the right hand side of a single <code>name: value</code> pair.</p>
+</div></div><div class="item-row"><div class="item-left module-item"><a class="struct" href="struct.HeaderValues.html" title="trillium_http::HeaderValues struct">HeaderValues</a></div><div class="item-right docblock-short"><p>A header value is a collection of one or more <a href="struct.HeaderValue.html" title="HeaderValue"><code>HeaderValue</code></a>. It
+has been optimized for the “one <a href="struct.HeaderValue.html" title="HeaderValue"><code>HeaderValue</code></a>” case, but can
+accomodate more than one value.</p>
+</div></div><div class="item-row"><div class="item-left module-item"><a class="struct" href="struct.Headers.html" title="trillium_http::Headers struct">Headers</a></div><div class="item-right docblock-short"><p>Trillium’s header map type</p>
+</div></div><div class="item-row"><div class="item-left module-item"><a class="struct" href="struct.ReceivedBody.html" title="trillium_http::ReceivedBody struct">ReceivedBody</a></div><div class="item-right docblock-short"><p>A received http body</p>
+</div></div><div class="item-row"><div class="item-left module-item"><a class="struct" href="struct.StateSet.html" title="trillium_http::StateSet struct">StateSet</a></div><div class="item-right docblock-short"><p>Store and retrieve values by
+<a href="https://doc.rust-lang.org/std/any/struct.TypeId.html"><code>TypeId</code></a>. This
+allows storing arbitrary data that implements <code>Sync + Send + 'static</code>.</p>
+</div></div><div class="item-row"><div class="item-left module-item"><a class="struct" href="struct.Stopper.html" title="trillium_http::Stopper struct">Stopper</a></div><div class="item-right docblock-short"><p>This struct provides a synchronized mechanism for canceling
+Futures and Streams.</p>
+</div></div><div class="item-row"><div class="item-left module-item"><a class="struct" href="struct.Synthetic.html" title="trillium_http::Synthetic struct">Synthetic</a></div><div class="item-right docblock-short"><p>Synthetic represents a simple transport that contains fixed
+content. This is exclusively useful for testing or for server
+implementations that are not read from an io connection, such as a
+faas function, in which the entire body may be available immediately
+on invocation.</p>
+</div></div><div class="item-row"><div class="item-left module-item"><a class="struct" href="struct.Upgrade.html" title="trillium_http::Upgrade struct">Upgrade</a></div><div class="item-right docblock-short"><p>This open (pub fields) struct represents a http upgrade. It contains
+all of the data available on a Conn, as well as owning the underlying
+transport.</p>
+</div></div></div><h2 id="enums" class="small-section-header"><a href="#enums">Enums</a></h2>
+<div class="item-table"><div class="item-row"><div class="item-left module-item"><a class="enum" href="enum.ConnectionStatus.html" title="trillium_http::ConnectionStatus enum">ConnectionStatus</a></div><div class="item-right docblock-short"><p>This represents the next state after a response on a conn transport.</p>
+</div></div><div class="item-row"><div class="item-left module-item"><a class="enum" href="enum.Error.html" title="trillium_http::Error enum">Error</a></div><div class="item-right docblock-short"><p>Concrete errors that occur within trillium’s http implementation</p>
+</div></div><div class="item-row"><div class="item-left module-item"><a class="enum" href="enum.KnownHeaderName.html" title="trillium_http::KnownHeaderName enum">KnownHeaderName</a></div><div class="item-right docblock-short"><p>A short nonehaustive enum of headers that trillium can
+represent as a u8. Use a <code>KnownHeaderName</code> variant instead
+of a &amp;’static str anywhere possible, as it allows trillium
+to skip parsing the header entirely.</p>
+</div></div><div class="item-row"><div class="item-left module-item"><a class="enum" href="enum.Method.html" title="trillium_http::Method enum">Method</a></div><div class="item-right docblock-short"><p>HTTP request methods.</p>
+</div></div><div class="item-row"><div class="item-left module-item"><a class="enum" href="enum.ReceivedBodyState.html" title="trillium_http::ReceivedBodyState enum">ReceivedBodyState</a></div><div class="item-right docblock-short"><p>the current read state of this body</p>
+</div></div><div class="item-row"><div class="item-left module-item"><a class="enum" href="enum.Status.html" title="trillium_http::Status enum">Status</a></div><div class="item-right docblock-short"><p>HTTP response status codes.</p>
+</div></div><div class="item-row"><div class="item-left module-item"><a class="enum" href="enum.Version.html" title="trillium_http::Version enum">Version</a></div><div class="item-right docblock-short"><p>The version of the HTTP protocol in use.</p>
+</div></div></div><h2 id="constants" class="small-section-header"><a href="#constants">Constants</a></h2>
+<div class="item-table"><div class="item-row"><div class="item-left module-item"><a class="constant" href="constant.SERVICE_UNAVAILABLE.html" title="trillium_http::SERVICE_UNAVAILABLE constant">SERVICE_UNAVAILABLE</a></div><div class="item-right docblock-short"><p>A pre-rendered http response to send when the server is at capacity.</p>
+</div></div></div><h2 id="types" class="small-section-header"><a href="#types">Type Definitions</a></h2>
+<div class="item-table"><div class="item-row"><div class="item-left module-item"><a class="type" href="type.Result.html" title="trillium_http::Result type">Result</a></div><div class="item-right docblock-short"><p>this crate’s result type</p>
+</div></div></div></section></div></main><div id="rustdoc-vars" data-root-path="../" data-current-crate="trillium_http" data-themes="ayu,dark,light" data-resource-suffix="" data-rustdoc-version="1.63.0-nightly (5750a6aa2 2022-06-20)" ></div>
+</body></html>

@@ -1,0 +1,1 @@
+initSidebarItems({"macro":[["include_dir","Embed the contents of a directory. “Returns” a Dir"],["include_entry","Embed a directory or file. “Returns” a DirEntry"]]});

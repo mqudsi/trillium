@@ -1,0 +1,1 @@
+initSidebarItems({"fn":[["cookies","Alias for CookiesHandler::new()"]],"struct":[["CookiesHandler","The trillium cookie handler. See crate level docs for an example. This must run before any handlers access the cookie jar."]],"trait":[["CookiesConnExt","Extension trait adding cookie capacities to [`Conn`]."]]});

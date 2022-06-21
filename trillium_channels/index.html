@@ -1,0 +1,105 @@
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="An implementation of phoenix channels for trillium.rs"><meta name="keywords" content="rust, rustlang, rust-lang, trillium_channels"><title>trillium_channels - Rust</title><link rel="preload" as="font" type="font/woff2" crossorigin href="../SourceSerif4-Regular.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../FiraSans-Regular.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../FiraSans-Medium.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../SourceCodePro-Regular.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../SourceSerif4-Bold.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../SourceCodePro-Semibold.ttf.woff2"><link rel="stylesheet" type="text/css" href="../normalize.css"><link rel="stylesheet" type="text/css" href="../rustdoc.css" id="mainThemeStyle"><link rel="stylesheet" type="text/css" href="../ayu.css" disabled><link rel="stylesheet" type="text/css" href="../dark.css" disabled><link rel="stylesheet" type="text/css" href="../light.css" id="themeStyle"><script id="default-settings" ></script><script src="../storage.js"></script><script src="../crates.js"></script><script defer src="../main.js"></script>
+    <noscript><link rel="stylesheet" href="../noscript.css"></noscript><link rel="alternate icon" type="image/png" href="../favicon-16x16.png"><link rel="alternate icon" type="image/png" href="../favicon-32x32.png"><link rel="icon" type="image/svg+xml" href="../favicon.svg"></head><body class="rustdoc mod crate"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="mobile-topbar"><button class="sidebar-menu-toggle">&#9776;</button><a class="sidebar-logo" href="../trillium_channels/index.html"><div class="logo-container"><img class="rust-logo" src="../rust-logo.svg" alt="logo"></div>
+        </a><h2 class="location"></h2>
+    </nav>
+    <nav class="sidebar"><a class="sidebar-logo" href="../trillium_channels/index.html"><div class="logo-container"><img class="rust-logo" src="../rust-logo.svg" alt="logo"></div>
+        </a><h2 class="location"><a href="#">Crate trillium_channels</a></h2><div class="sidebar-elems"><div class="block"><ul><li class="version">Version 0.2.0</li><li><a id="all-types" href="all.html">All Items</a></li></ul></div><section><div class="block"><ul><li><a href="#macros">Macros</a></li><li><a href="#structs">Structs</a></li><li><a href="#enums">Enums</a></li><li><a href="#traits">Traits</a></li><li><a href="#functions">Functions</a></li></ul></div></section><div id="sidebar-vars" data-name="trillium_channels" data-ty="mod" data-relpath=""></div><script defer src="sidebar-items.js"></script></div></nav><main><div class="width-limiter"><div class="sub-container"><a class="sub-logo-container" href="../trillium_channels/index.html"><img class="rust-logo" src="../rust-logo.svg" alt="logo"></a><nav class="sub"><form class="search-form"><div class="search-container"><span></span><input class="search-input" name="search" autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"><button type="button" id="help-button" title="help">?</button><div id="settings-menu" tabindex="-1">
+                                <a href="../settings.html" title="settings"><img width="22" height="22" alt="Change settings" src="../wheel.svg"></a></div>
+                        </div></form></nav></div><section id="main-content" class="content"><div class="main-heading">
+    <h1 class="fqn"><span class="in-band">Crate <a class="mod" href="#">trillium_channels</a><button id="copy-path" onclick="copy_path(this)" title="Copy item path to clipboard"><img src="../clipboard.svg" width="19" height="18" alt="Copy item path"></button></span></h1><span class="out-of-band"><a class="srclink" href="../src/trillium_channels/lib.rs.html#1-177">source</a> · <a id="toggle-all-docs" href="javascript:void(0)" title="collapse all docs">[<span class="inner">&#x2212;</span>]</a></span></div><details class="rustdoc-toggle top-doc" open><summary class="hideme"><span>Expand description</span></summary><div class="docblock"><h2 id="an-implementation-of-phoenix-channels-for-trilliumrs"><a href="#an-implementation-of-phoenix-channels-for-trilliumrs">An implementation of phoenix channels for trillium.rs</a></h2>
+<p>Channels are a means of distributing events in soft-realtime to
+connected websocket clients, including topic-subscription-based
+fanout.</p>
+<p>From the <a href="https://hexdocs.pm/phoenix/channels.html">phoenix docs</a>,</p>
+<p>Some possible use cases include:</p>
+<ul>
+<li>Chat rooms and APIs for messaging apps</li>
+<li>Breaking news, like “a goal was scored” or “an earthquake is coming”</li>
+<li>Tracking trains, trucks, or race participants on a map</li>
+<li>Events in multiplayer games</li>
+<li>Monitoring sensors and controlling lights</li>
+<li>Notifying a browser that a page’s CSS or JavaScript has changed
+(this is handy in development)</li>
+<li>Conceptually, Channels are pretty simple.</li>
+</ul>
+<p>First, clients connect to the server using WebSockets. Once connected,
+they join one or more topics. For example, to interact with a public
+chat room clients may join a topic called public_chat, and to receive
+updates from a product with ID 7, they may need to join a topic called
+product_updates:7.</p>
+<p>Clients can push messages to the topics they’ve joined, and can also
+receive messages from them. The other way around, Channel servers
+receive messages from their connected clients, and can push messages
+to them too.</p>
+<h3 id="current-known-differences-from-phoenix-channels"><a href="#current-known-differences-from-phoenix-channels">Current known differences from phoenix channels:</a></h3><h4 id="no-long-polling-support"><a href="#no-long-polling-support">No long-polling support</a></h4>
+<p>Phoenix channels support long polling transports as well as
+websockets. As most modern browsers and http clients support
+websockets, as of the current version, trillium channels exclusively
+are built on them. The design should be flexible to support long
+polling if it is eventually needed.</p>
+<h4 id="no-multi-server-synchronization-yet"><a href="#no-multi-server-synchronization-yet">No multi-server synchronization yet</a></h4>
+<p>Phoenix channels support running several server nodes and distributing
+all broadcast messages between them. This will be straightforward to
+add to trillium channels in a future revision, but the current
+implementation does not synchronize messages across servers. However,
+in the mean time, you can use <a href="struct.Channel.html#method.broadcaster" title="Channel::broadcaster"><code>Channel::broadcaster</code></a> to return a
+<a href="struct.ChannelBroadcaster.html" title="ChannelBroadcaster"><code>ChannelBroadcaster</code></a> that can be used to publish and subscribe to
+messages between servers using whatever distribution mechanism is
+appropriate for your application and deployment. Open a discussion on
+the trillium repo for ideas on how this might work for you.</p>
+<h4 id="event-routing-is-handled-in-user-code"><a href="#event-routing-is-handled-in-user-code">Event routing is handled in user code</a></h4>
+<p>Phoenix channels has a notion of registering channel handlers for
+different topics, so an implementation might involve registering a
+RoomChannel for <code>rooms:*</code>. Trillium channels does not currently
+provide this routing/matching behavior, but will likely do so
+eventually.</p>
+<h3 id="simple-example-chat-app"><a href="#simple-example-chat-app">Simple Example: Chat App</a></h3>
+<div class="example-wrap"><pre class="rust rust-example-rendered"><code><span class="kw">use</span> <span class="ident">trillium_channels</span>::{<span class="ident">channel</span>, <span class="ident">ChannelConn</span>, <span class="ident">ChannelEvent</span>, <span class="ident">ChannelHandler</span>};
+
+<span class="kw">struct</span> <span class="ident">ChatChannel</span>;
+<span class="attribute">#[<span class="ident">trillium::async_trait</span>]</span>
+<span class="kw">impl</span> <span class="ident">ChannelHandler</span> <span class="kw">for</span> <span class="ident">ChatChannel</span> {
+    <span class="kw">async</span> <span class="kw">fn</span> <span class="ident">join_channel</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">conn</span>: <span class="ident">ChannelConn</span><span class="op">&lt;</span><span class="lifetime">&#39;_</span><span class="op">&gt;</span>, <span class="ident">event</span>: <span class="ident">ChannelEvent</span>) {
+        <span class="kw">match</span> <span class="ident">event</span>.<span class="ident">topic</span>() {
+            <span class="string">&quot;rooms:lobby&quot;</span> =&gt; {
+                <span class="ident">conn</span>.<span class="ident">allow_join</span>(<span class="kw-2">&amp;</span><span class="ident">event</span>, <span class="kw-2">&amp;</span>()).<span class="kw">await</span>;
+                <span class="ident">conn</span>.<span class="ident">broadcast</span>((<span class="string">&quot;rooms:lobby&quot;</span>, <span class="string">&quot;user:entered&quot;</span>));
+            }
+
+            <span class="kw">_</span> =&gt; {}
+        }
+    }
+
+    <span class="kw">async</span> <span class="kw">fn</span> <span class="ident">incoming_message</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">conn</span>: <span class="ident">ChannelConn</span><span class="op">&lt;</span><span class="lifetime">&#39;_</span><span class="op">&gt;</span>, <span class="ident">event</span>: <span class="ident">ChannelEvent</span>) {
+        <span class="kw">match</span> (<span class="ident">event</span>.<span class="ident">topic</span>(), <span class="ident">event</span>.<span class="ident">event</span>()) {
+            (<span class="string">&quot;rooms:lobby&quot;</span>, <span class="string">&quot;new:msg&quot;</span>) =&gt; <span class="ident">conn</span>.<span class="ident">broadcast</span>(<span class="ident">event</span>),
+            <span class="kw">_</span> =&gt; {}
+        }
+    }
+}
+
+<span class="comment">// fn main() {</span>
+<span class="comment">//     trillium_smol::run(channel(ChatChannel));</span>
+<span class="comment">// }</span></code></pre></div>
+<p>See channels/examples/channels.rs for a fully functional example that uses the front-end from <a href="https://github.com/chrismccord/phoenix_chat_example">the phoenix chat example</a>.</p>
+</div></details><h2 id="macros" class="small-section-header"><a href="#macros">Macros</a></h2>
+<div class="item-table"><div class="item-row"><div class="item-left module-item"><a class="macro" href="macro.event.html" title="trillium_channels::event macro">event</a></div><div class="item-right docblock-short"><p>This macro provides a convenient constructor for a
+<a href="struct.ChannelEvent.html" title="ChannelEvent"><code>ChannelEvent</code></a>. It is called with a topic, an event, and an optional
+inline json payload.</p>
+</div></div><div class="item-row"><div class="item-left module-item"><a class="macro" href="macro.json.html" title="trillium_channels::json macro">json</a></div><div class="item-right docblock-short"><p>Construct a <code>serde_json::Value</code> from a JSON literal.</p>
+</div></div></div><h2 id="structs" class="small-section-header"><a href="#structs">Structs</a></h2>
+<div class="item-table"><div class="item-row"><div class="item-left module-item"><a class="struct" href="struct.Channel.html" title="trillium_channels::Channel struct">Channel</a></div><div class="item-right docblock-short"><p>Trillium handler containing a <a href="trait.ChannelHandler.html" title="ChannelHandler"><code>ChannelHandler</code></a></p>
+</div></div><div class="item-row"><div class="item-left module-item"><a class="struct" href="struct.ChannelBroadcaster.html" title="trillium_channels::ChannelBroadcaster struct">ChannelBroadcaster</a></div><div class="item-right docblock-short"><p>Channel-wide event broadcaster and subscriber</p>
+</div></div><div class="item-row"><div class="item-left module-item"><a class="struct" href="struct.ChannelClient.html" title="trillium_channels::ChannelClient struct">ChannelClient</a></div><div class="item-right docblock-short"><p>Communicate with the connected client.</p>
+</div></div><div class="item-row"><div class="item-left module-item"><a class="struct" href="struct.ChannelConn.html" title="trillium_channels::ChannelConn struct">ChannelConn</a></div><div class="item-right docblock-short"><p>A ChannelConn is a wrapper around a <a href="../trillium_websockets/websocket_connection/struct.WebSocketConn.html" title="WebSocketConn"><code>WebSocketConn</code></a> that also
+contains a <a href="struct.ChannelClient.html" title="ChannelClient"><code>ChannelClient</code></a></p>
+</div></div><div class="item-row"><div class="item-left module-item"><a class="struct" href="struct.ChannelEvent.html" title="trillium_channels::ChannelEvent struct">ChannelEvent</a></div><div class="item-right docblock-short"><p>The messages passed between server and connected clients.</p>
+</div></div></div><h2 id="enums" class="small-section-header"><a href="#enums">Enums</a></h2>
+<div class="item-table"><div class="item-row"><div class="item-left module-item"><a class="enum" href="enum.Version.html" title="trillium_channels::Version enum">Version</a></div><div class="item-right docblock-short"><p>The phoenix channel “protocol” version</p>
+</div></div></div><h2 id="traits" class="small-section-header"><a href="#traits">Traits</a></h2>
+<div class="item-table"><div class="item-row"><div class="item-left module-item"><a class="trait" href="trait.ChannelHandler.html" title="trillium_channels::ChannelHandler trait">ChannelHandler</a></div><div class="item-right docblock-short"><p>Trait for you to implement in order to define a <a href="crate::Channel"><code>Channel</code></a>.</p>
+</div></div></div><h2 id="functions" class="small-section-header"><a href="#functions">Functions</a></h2>
+<div class="item-table"><div class="item-row"><div class="item-left module-item"><a class="fn" href="fn.channel.html" title="trillium_channels::channel fn">channel</a></div><div class="item-right docblock-short"><p>Constructs a new <a href="struct.Channel.html" title="Channel"><code>Channel</code></a> trillium handler from the provided
+<a href="trait.ChannelHandler.html" title="ChannelHandler"><code>ChannelHandler</code></a>. This is an alias for <a href="struct.Channel.html#method.new" title="Channel::new"><code>Channel::new</code></a></p>
+</div></div></div></section></div></main><div id="rustdoc-vars" data-root-path="../" data-current-crate="trillium_channels" data-themes="ayu,dark,light" data-resource-suffix="" data-rustdoc-version="1.63.0-nightly (5750a6aa2 2022-06-20)" ></div>
+</body></html>

@@ -1,0 +1,1 @@
+initSidebarItems({"fn":[["head","Alias for [`Head::new`]"]],"struct":[["Head","Trillium handler for HEAD requests"]]});

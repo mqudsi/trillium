@@ -1,0 +1,1 @@
+initSidebarItems({"macro":[["root","Include the path as root. To be passed into [`StaticCompiledHandler::new`]."],["static_compiled","The preferred interface to build a StaticCompiledHandler"]],"struct":[["StaticCompiledHandler","The static compiled handler which contains the compile-time loaded assets"]]});

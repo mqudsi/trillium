@@ -1,0 +1,1 @@
+initSidebarItems({"enum":[["Method","HTTP request methods."],["Status","HTTP response status codes."]],"struct":[["Conn","A Trillium HTTP connection."]]});

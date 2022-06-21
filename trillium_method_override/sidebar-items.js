@@ -1,0 +1,1 @@
+initSidebarItems({"fn":[["method_override","Alias for MethodOverride::new()"]],"struct":[["MethodOverride","Trillium method override handler"]]});

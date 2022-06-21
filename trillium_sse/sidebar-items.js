@@ -1,0 +1,1 @@
+initSidebarItems({"struct":[["Event","Events are a concrete implementation of the [`Eventable`] trait."]],"trait":[["Eventable","A trait that allows any Unpin + Send + Sync type to act as an event."],["SseConnExt","Extension trait for server sent events"]]});
